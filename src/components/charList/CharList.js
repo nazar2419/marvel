@@ -3,9 +3,6 @@ import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import MarvelService from '../../services/MarvelService'
 import './charList.scss';
-import abyss from '../../resources/img/abyss.jpg';
-
-
 
 class  CharList extends Component {
     state = {
@@ -14,10 +11,15 @@ class  CharList extends Component {
         error: false
      }
     marvelService = new MarvelService();
+
     componentDidMount() {
-        this.marvelService.getAllCharacters()
-            .then(this.onCharListLoad)
-            .catch(this.onError)
+        this.onRequest();
+    }
+
+    onRequest = (offset) => {
+        this.marvelService.getAllCharacters(offset)
+        .then(this.onCharListLoad)
+        .catch(this.onError)
     }
 
     onCharListLoad = (charList) => {
@@ -45,7 +47,7 @@ class  CharList extends Component {
                 <li
                     className='char__item'
                     key={item.id}
-                    onClick={() => this.props.onCharListLoad(item.id)}>
+                    onClick={() => this.props.onCharSelected(item.id)}>
                         <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
                         <div className="char__name">{item.name}</div>
                 </li>
